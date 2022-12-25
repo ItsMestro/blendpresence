@@ -94,9 +94,10 @@ def getObjectCount():
     
 def getPolyCount():
     count = 0
+    depsgraph = bpy.context.evaluated_depsgraph_get()
     for e in bpy.context.scene.objects:
-        if e.type == "MESH":
-            count += len(e.data.polygons)
+        if e.type == "MESH" and e.visible_get():
+            count += len(e.evaluated_get(depsgraph).data.loop_triangles)
     return f"{count:,d} total polys"
 
 def getBoneCount():
